@@ -8,7 +8,6 @@ const CustomerSchema = new mongoose.Schema({
         trim: true,
         maxlength:[50, 'Name can not be more than 50 characters']
     },
-    slug: String,
     email:{
         type:String,
         match: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Please use valid email address'],
@@ -27,14 +26,20 @@ const CustomerSchema = new mongoose.Schema({
         type:String,
         required: [true, 'Please add a Address'],
     },
-    photo:{
-        type:String,
-        default: 'no-photo.jpg'
-    },
     description:{
         type:String,
         required: [true, 'Please add a descriptiomn'],
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    user:{
+        type: mongoose.Schema.ObjectId,
+        ref:'User',
+        required:true
     }
+
 
 
 })

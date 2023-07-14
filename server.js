@@ -1,11 +1,13 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const cookieParser =require('cookie-parser')
 const errorHandler = require('./middleware/error')
 const connectDB = require('./config/db')
 
 //Route files
 const customers = require('./routes/customer');
+const users = require('./routes/auth');
 //load env variable
 dotenv.config({path: './config/config.env'});
 
@@ -22,10 +24,14 @@ const app = express();
 //body Parser
 app.use(express.json())
 
+//cookie parser
+app.use(cookieParser())
+
 
 const PORT = process.env.PORT || 5000;
 //Mount routers
 app.use('/api/v1/customer', customers);
+app.use('/api/v1/auth/', users);
 
 app.use(errorHandler);
 
