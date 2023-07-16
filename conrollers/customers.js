@@ -41,8 +41,6 @@ exports.addCustomer = asyncHandler(async(req, res, next)=>{
     if(adminCustomer && authRole != 'admin'){
         return next(new ErrorResponse(`The user with ID ${req.user.id} has already added a customer`, 400));
     }
-
-
         const customers = await Customers.create(req.body);
         res.status(200).json({ success:true,data: customers})    
 });

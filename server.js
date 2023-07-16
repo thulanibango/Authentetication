@@ -2,8 +2,17 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cookieParser =require('cookie-parser')
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors');
+
+
 const errorHandler = require('./middleware/error')
 const connectDB = require('./config/db')
+
 
 //Route files
 const customers = require('./routes/customer');
@@ -26,6 +35,28 @@ app.use(express.json())
 
 //cookie parser
 app.use(cookieParser())
+
+//Sanistising data to prevent SQL injections
+app.use(mongoSanitize())
+
+//set security headers ( To security in headers when make a request )
+app.use(helmet());
+
+//prevent cross site scipting atacks
+app.use(xss())
+
+//set rate limmiter
+const limitter = rateLimit({
+    windowMs: 10 * 60 * 1000,
+    max: 100
+})
+app.use(limitter);
+
+//Prevent http param pollution
+app.use(hpp())
+
+//enable cors
+app.use(cors());
 
 
 const PORT = process.env.PORT || 5000;
