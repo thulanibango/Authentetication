@@ -1,4 +1,5 @@
 const express = require('express');
+const path = ('path');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cookieParser =require('cookie-parser')
@@ -58,8 +59,11 @@ app.use(hpp())
 //enable cors
 app.use(cors());
 
+//Set static folder
+app.use(express.static(path.join(__dirname, 'public/')));
 
 const PORT = process.env.PORT || 5000;
+
 //Mount routers
 app.use('/api/v1/customer', customers);
 app.use('/api/v1/auth/', users);
