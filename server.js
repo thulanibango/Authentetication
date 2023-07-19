@@ -1,5 +1,5 @@
 const express = require('express');
-const path = ('path');
+const path = require('path');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cookieParser =require('cookie-parser')
@@ -60,7 +60,8 @@ app.use(hpp())
 app.use(cors());
 
 //Set static folder
-app.use(express.static(path.join(__dirname, 'public/')));
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 const PORT = process.env.PORT || 5000;
 
