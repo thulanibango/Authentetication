@@ -33,13 +33,23 @@ exports.getSingleCustomer = asyncHandler(async (req, res, next)=>{
 exports.addCustomer = asyncHandler(async(req, res, next)=>{
     //adding user req.body
     req.body.user = req.user.id;
+    const authRole =req.user.role;
+    if (authRole === 'user') {
+    return next(
+      new ErrorResponse(
+        `Normal users are not allowed to add customers`,
+        403
+      )
+    );
+  }
 
     //check for admin customers
-    const adminCustomer = await Customers.findOne({user:req.user.id})
-    const authRole =req.user.role;
     //if the user is not an super admin(sAdmin), can add one customer
-    if(adminCustomer && authRole != 'admin'){
-        return next(new ErrorResponse(`The user with ID ${req.user.id} has already added a customer`, 400));
+    if(authRole === 'admin'){
+        const adminCustomer = await Customers.findOne({user:req.user.id});
+        if(adminCustomer){
+            return next(new ErrorResponse(`The user with ID ${req.user.id} has already added a customer`, 400));
+        }
     }
         const customers = await Customers.create(req.body);
         res.status(200).json({ success:true,data: customers})    
