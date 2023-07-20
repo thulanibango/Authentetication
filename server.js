@@ -41,7 +41,8 @@ app.use(cookieParser())
 app.use(mongoSanitize())
 
 //set security headers ( To security in headers when make a request )
-app.use(helmet());
+// app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 
 //prevent cross site scipting atacks
 app.use(xss())
