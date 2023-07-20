@@ -31,3 +31,7 @@ Start the server
 ```bash
   npm run dev
 ```
+
+## API Documentation
+
+https://documenter.getpostman.com/view/28498692/2s946k4pxU
